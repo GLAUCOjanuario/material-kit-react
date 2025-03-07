@@ -1,14 +1,37 @@
-import * as React from 'react';
+import React from "react";
 
-import type { UserContextValue } from '@/contexts/user-context';
-import { UserContext } from '@/contexts/user-context';
+export function useUser() {
+  const [user, setUser] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
 
-export function useUser(): UserContextValue {
-  const context = React.useContext(UserContext);
+  React.useEffect(() => {
+    async function fetchUser() {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error('Usuário não autenticado');
+        }
 
-  if (!context) {
-    throw new Error('useUser must be used within a UserProvider');
-  }
+        const res = await fetch('http://localhost:8000/api/user', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
 
-  return context;
+        if (!res.ok) {
+          throw new Error('Erro ao buscar usuários');
+        }
+
+        const data = await res.json();
+        setUser(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchUser();
+  }, []);
+
+  return { user, isLoading, error };
 }

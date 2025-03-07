@@ -78,6 +78,7 @@ export function CustomersTable({
               <TableCell>Location</TableCell>
               <TableCell>Phone</TableCell>
               <TableCell>Signed Up</TableCell>
+              <TableCell>Signed U1</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -109,6 +110,7 @@ export function CustomersTable({
                     {row.address.city}, {row.address.state}, {row.address.country}
                   </TableCell>
                   <TableCell>{row.phone}</TableCell>
+                  <TableCell>{dayjs(row.createdAt).format('MMM D, YYYY')}</TableCell>
                   <TableCell>{dayjs(row.createdAt).format('MMM D, YYYY')}</TableCell>
                 </TableRow>
               );

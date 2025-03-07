@@ -30,23 +30,20 @@ export function UserPopover({ anchorEl, onClose, open }: UserPopoverProps): Reac
 
   const handleSignOut = React.useCallback(async (): Promise<void> => {
     try {
-      const { error } = await authClient.signOut();
-
-      if (error) {
-        logger.error('Sign out error', error);
-        return;
-      }
-
-      // Refresh the auth state
+      // 🔹 Remove o token do localStorage e sessionStorage
+      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
+  
+      // 🔹 Atualiza o estado de autenticação (caso use `useUser()`)
       await checkSession?.();
-
-      // UserProvider, for this case, will not refresh the router and we need to do it manually
-      router.refresh();
-      // After refresh, AuthGuard will handle the redirect
+  
+      // 🔹 Redireciona o usuário para a tela de login
+      router.push(paths.auth.signIn);
     } catch (err) {
-      logger.error('Sign out error', err);
+      logger.error("Erro ao fazer logout", err);
     }
   }, [checkSession, router]);
+  
 
   return (
     <Popover
@@ -68,19 +65,19 @@ export function UserPopover({ anchorEl, onClose, open }: UserPopoverProps): Reac
           <ListItemIcon>
             <GearSixIcon fontSize="var(--icon-fontSize-md)" />
           </ListItemIcon>
-          Settings
+          Configurações
         </MenuItem>
         <MenuItem component={RouterLink} href={paths.dashboard.account} onClick={onClose}>
           <ListItemIcon>
             <UserIcon fontSize="var(--icon-fontSize-md)" />
           </ListItemIcon>
-          Profile
+          Perfil
         </MenuItem>
         <MenuItem onClick={handleSignOut}>
           <ListItemIcon>
             <SignOutIcon fontSize="var(--icon-fontSize-md)" />
           </ListItemIcon>
-          Sign out
+          Sair
         </MenuItem>
       </MenuList>
     </Popover>

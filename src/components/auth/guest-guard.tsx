@@ -29,7 +29,12 @@ export function GuestGuard({ children }: GuestGuardProps): React.JSX.Element | n
 
     if (user) {
       logger.debug('[GuestGuard]: User is logged in, redirecting to dashboard');
-      router.replace(paths.dashboard.overview);
+      
+      // Adiciona um pequeno delay antes de redirecionar para evitar bugs visuais
+      setTimeout(() => {
+        router.replace(paths.dashboard.overview);
+      }, 500);
+
       return;
     }
 
@@ -40,11 +45,10 @@ export function GuestGuard({ children }: GuestGuardProps): React.JSX.Element | n
     checkPermissions().catch(() => {
       // noop
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- Expected
   }, [user, error, isLoading]);
 
-  if (isChecking) {
-    return null;
+  if (isLoading || isChecking) {
+    return <p>Carregando...</p>; // Evita redirecionar enquanto a sessão ainda está carregando
   }
 
   if (error) {
