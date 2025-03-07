@@ -23,6 +23,7 @@ function noop(): void {
 }
 
 export interface Customer {
+  [x: string]: ReactNode;
   id: string;
   avatar: string;
   name: string;
@@ -75,10 +76,9 @@ export function CustomersTable({
               </TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>
-              <TableCell>Location</TableCell>
-              <TableCell>Phone</TableCell>
-              <TableCell>Signed Up</TableCell>
-              <TableCell>Signed U1</TableCell>
+              <TableCell>Telefone</TableCell>
+              <TableCell>Célula</TableCell>
+              <TableCell>Lider</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -102,16 +102,14 @@ export function CustomersTable({
                   <TableCell>
                     <Stack sx={{ alignItems: 'center' }} direction="row" spacing={2}>
                       <Avatar src={row.avatar} />
-                      <Typography variant="subtitle2">{row.name}</Typography>
+                      <Typography variant="subtitle2">{row.nome}</Typography>
                     </Stack>
                   </TableCell>
                   <TableCell>{row.email}</TableCell>
-                  <TableCell>
-                    {row.address.city}, {row.address.state}, {row.address.country}
-                  </TableCell>
-                  <TableCell>{row.phone}</TableCell>
-                  <TableCell>{dayjs(row.createdAt).format('MMM D, YYYY')}</TableCell>
-                  <TableCell>{dayjs(row.createdAt).format('MMM D, YYYY')}</TableCell>
+                 
+                  <TableCell>{row.telefone}</TableCell>
+                  <TableCell>{row.celula}</TableCell>
+                  <TableCell>{row.lider}</TableCell>
                 </TableRow>
               );
             })}
